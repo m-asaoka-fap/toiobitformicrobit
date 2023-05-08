@@ -6,6 +6,17 @@
  * 2023.05.08  (FAP)m-asaoka  新規作成
  *
  */
+/* 動作種類 */
+enum MotionType {
+    //% block="↑"
+    forward = 0,
+    //% block="↓"
+    back = 1,
+    //% block="→"
+    right = 2,
+    //% block="←"
+    left = 3
+}
 /* プリセットされた音 */
 enum SoundEffect {
     //% block="0(Enter)"
@@ -44,7 +55,7 @@ enum WaitTime {
     //% block="60秒（びょう）"
     WAIT5 = 60000
 }
-/* モーター回転数*/
+/* モーター回転数 */
 enum ThrottleKind {
     //% block="10"
     TH10 = 10,
@@ -196,6 +207,44 @@ namespace custom {
         let strSendTxt = "presetsound=" + strEffectType;
         sendText(strSendTxt);
     }
+    /**
+    * 処理（しょり）を指定した秒数つづけるよ
+    */
+    //% block=" %value 処理（しょり）をつづける"
+    //% group="レベル１"
+    export function waittime(waittime: WaitTime): void {
+        if (bInit != true) {
+            return;
+        }
+        let strWaitTime = convertToText(waittime);
+        let strSendTxt = "wait=" + strWaitTime;
+        sendText(strSendTxt);
+    }
+    /**
+    * 回転数（かいてんすう）を設定（せってい）するよ
+    */
+    //% block="回転数（かいてんすう）を %value に設定（せってい）する"
+    // ThrottleKind.defl = ThrottleKind.TH10
+    //% group="レベル2"
+    export function setthrottle(throttle: ThrottleKind): void {
+        if (bInit != true) {
+            return;
+        }
+        defaultThrottle = throttle;
+    }
+    /**
+    * 回転数（かいてんすう）と進む（すすむ）方向（ほうこう）を設定（するよ）
+    */
+    //% block=" %value の方向（ほうこう）に 回転数（かいてんすう）%value2 ですすむ" 
+    // MotionType.defl = MotionType.forward
+    // ThrottleKind.defl = ThrottleKind.TH10
+    //% group="レベル2"
+    export function setthrottleanddir(dir:MotionType, throttle: ThrottleKind): void {
+        if (bInit != true) {
+            return;
+        }
+    }
+
     /**
     *  文字列をシリアル通信ポートに送信します
     */
